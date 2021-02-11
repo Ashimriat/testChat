@@ -20,21 +20,21 @@
 </template>
 
 <script>
-	import { mapActions, mapState } from "vuex";
+  import { mapActions, mapState } from "vuex";
   import Modal from "./components/Modal";
   import TopPanel from "./components/TopPanel";
   import RoomsList from "./components/RoomsList";
   import ActiveRoom from "./components/ActiveRoom";
   import UserMessageInput from "./components/UserMessageInput";
   import RoomTip from "./components/RoomTip";
-	import ErrorNotify from "./components/ErrorNotify";
-	import Loader from "./components/Loader";
-	import actions from "./store/actions";
-	import { GENERAL_MODULE, ROOMS_MODULE, SOCKET_MODULE, USER_MODULE } from "./store/modulesNames";
+  import ErrorNotify from "./components/ErrorNotify";
+  import Loader from "./components/Loader";
+  import actions from "./store/actions";
+  import { GENERAL_MODULE, ROOMS_MODULE, SOCKET_MODULE, USER_MODULE } from "./store/modulesNames";
 
 
-	const {
-		SOCKET: { CONNECT_SOCKET },
+  const {
+    SOCKET: { CONNECT_SOCKET },
     ROOMS: { LOAD_ROOMS_LIST },
     USER: { OBTAIN_USER_FROM_STORAGE },
     GENERAL: { LOAD_SETTINGS }
@@ -43,15 +43,15 @@
   export default {
     name: "App",
     components: {
-	    Loader,
+      Loader,
       RoomsList, ActiveRoom, UserMessageInput,
       TopPanel, Modal, RoomTip, ErrorNotify
     },
     async mounted() {
-	    await this.loadSettings();
-	    this.loadUser();
-    	if (this.userName) {
-    		this.loadAppData();
+      await this.loadSettings();
+      this.loadUser();
+      if (this.userName) {
+	this.loadAppData();
       }
     },
     methods: {
@@ -62,10 +62,10 @@
         loadUser: `${USER_MODULE}/${OBTAIN_USER_FROM_STORAGE}`
       }),
       async loadAppData() {
-	      await this.connectSocket();
-	      if (this.isConnected) {
-		      await this.loadRoomsList();
-	      }
+        await this.connectSocket();
+        if (this.isConnected) {
+          await this.loadRoomsList();
+        }
       },
     },
     computed: {
@@ -76,16 +76,7 @@
         isLoading: state => state[GENERAL_MODULE].isLoading
       }),
       rootClass() {
-        /*
-	      if (!this.isConnected && this.userName) {
-	      	return 'App--withStartLoader';
-	      } else
-
-         */
-        if (this.isConnected && this.isLoading) {
-		      return 'App--withLoader';
-	      }
-	      return '';
+      	return this.isConnected && this.isLoading ? 'App--withLoader' : '';
       }
     }
   }

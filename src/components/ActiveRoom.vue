@@ -22,47 +22,47 @@
 </template>
 
 <script>
-	import { mapGetters, mapState } from "vuex";
-	import { GENERAL_MODULE, ROOMS_MODULE } from "../store/modulesNames";
+  import { mapGetters, mapState } from "vuex";
+  import { GENERAL_MODULE, ROOMS_MODULE } from "../store/modulesNames";
   import getters from "../store/getters";
 
 
   const { ROOMS: { ACTIVE_ROOM } } = getters;
 
-	export default {
-		name: "ActiveRoom",
+  export default {
+    name: "ActiveRoom",
     mounted() {
-	    this.scrollToBottom();
+      this.scrollToBottom();
     },
     methods: {
-	    async scrollToBottom() {
-		    await this.$nextTick();
-		    this.$refs.activeRoomContainer.scrollBy(0, this.$refs.activeRoomContainer.scrollHeight);
-	    }
+      async scrollToBottom() {
+        await this.$nextTick();
+        this.$refs.activeRoomContainer.scrollBy(0, this.$refs.activeRoomContainer.scrollHeight);
+      }
     },
     computed: {
-			...mapGetters({
+      ...mapGetters({
         roomData: `${ROOMS_MODULE}/${ACTIVE_ROOM}`
-			}),
+      }),
       ...mapState({
         isLoading: state => state[GENERAL_MODULE].isLoading
       }),
       noHistoryMessage() {
-				if (this.roomData.isChecked && !this.roomData.messages.length) {
-					return 'В данной комнате еще нет сообщений.';
+        if (this.roomData.isChecked && !this.roomData.messages.length) {
+	  return 'В данной комнате еще нет сообщений.';
         } else if (!this.roomData.messages.length) {
-					return 'Здесь пока нет ни одного сообщения. Отправьте сообщение сейчас, или комната будет уничтожена при перезагрузке или закрытии страницы';
+	  return 'Здесь пока нет ни одного сообщения. Отправьте сообщение сейчас, или комната будет уничтожена при перезагрузке или закрытии страницы';
         } else {
-					return '';
+	  return '';
         }
       }
     },
     watch: {
-			['roomData.messages']() {
-				this.scrollToBottom();
+      ['roomData.messages']() {
+	this.scrollToBottom();
       }
     }
-	}
+  }
 </script>
 
 <style lang="scss">

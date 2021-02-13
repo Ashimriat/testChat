@@ -17,34 +17,34 @@
 </template>
 
 <script>
-	import { mapState, mapActions, mapMutations } from "vuex";
+  import { mapState, mapActions, mapMutations } from "vuex";
   import actions from "../store/actions";
   import mutations from "../store/mutations";
-	import { GENERAL_MODULE, ROOMS_MODULE } from "../store/modulesNames";
-	import { EVENTS, MODAL_TYPES } from "../constants";
+  import { GENERAL_MODULE, ROOMS_MODULE } from "../store/modulesNames";
+  import { EVENTS, MODAL_TYPES } from "../constants";
 
-	const { ROOMS: { SELECT_ROOM } } = actions;
-	const { GENERAL: { SET_MODAL } } = mutations;
+  const { ROOMS: { SELECT_ROOM } } = actions;
+  const { GENERAL: { SET_MODAL } } = mutations;
 
   export default {
     name: "RoomsList",
     methods: {
-    	...mapActions({
+      ...mapActions({
         selectRoom: `${ROOMS_MODULE}/${SELECT_ROOM}`
-    	}),
+      }),
       ...mapMutations({
         setModal: `${GENERAL_MODULE}/${SET_MODAL}`
       }),
       showTip(e, { id, name, lastMessage, isUnread }) {
-    		if (id !== this.activeRoomId && lastMessage) {
-			    this.$root.$emit(EVENTS.showTip, { e, roomData: { name, lastMessage, isUnread } });
-		    }
+        if (id !== this.activeRoomId && lastMessage) {
+	  this.$root.$emit(EVENTS.showTip, { e, roomData: { name, lastMessage, isUnread } });
+	}
       },
       hideTip() {
-    		this.$root.$emit(EVENTS.hideTip);
+    	this.$root.$emit(EVENTS.hideTip);
       },
       createRoom() {
-    		this.setModal(MODAL_TYPES.createRoom);
+    	this.setModal(MODAL_TYPES.createRoom);
       }
     },
     computed: {

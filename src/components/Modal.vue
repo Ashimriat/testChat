@@ -24,78 +24,78 @@
 </template>
 
 <script>
-	import { mapActions, mapMutations, mapState } from "vuex";
+  import { mapActions, mapMutations, mapState } from "vuex";
   import actions from "../store/actions";
   import mutations from "../store/mutations";
-	import { GENERAL_MODULE, ROOMS_MODULE, USER_MODULE } from "../store/modulesNames";
-	import {EVENTS, MODAL_CONTENT, MODAL_TYPES} from "../constants";
-	import Loader from "./Loader";
+  import { GENERAL_MODULE, ROOMS_MODULE, USER_MODULE } from "../store/modulesNames";
+  import {EVENTS, MODAL_CONTENT, MODAL_TYPES} from "../constants";
+  import Loader from "./Loader";
 
 
-	const { USER: { USER_CREATE_ROOM, DEFINE_USER } } = actions;
-	const { GENERAL: { SET_MODAL } } = mutations;
+  const { USER: { USER_CREATE_ROOM, DEFINE_USER } } = actions;
+  const { GENERAL: { SET_MODAL } } = mutations;
 
   export default {
-		name: "Modal",
-	  components: { Loader },
-	  data() {
-			return {
-				inputValue: '',
-				content: {},
+    name: "Modal",
+    components: { Loader },
+    data() {
+      return {
+	inputValue: '',
+	content: {},
         lengthWarn: false
       }
     },
     methods: {
-	    ...mapActions({
-		    defineUser: `${USER_MODULE}/${DEFINE_USER}`,
+      ...mapActions({
+	defineUser: `${USER_MODULE}/${DEFINE_USER}`,
         createRoom: `${ROOMS_MODULE}/${USER_CREATE_ROOM}`,
-	    }),
+      }),
       ...mapMutations({
         setModal: `${GENERAL_MODULE}/${SET_MODAL}`
       }),
       buttonHandler() {
-	    	this[this.content.buttonHandler]();
+	this[this.content.buttonHandler]();
       },
-	    logIn() {
-		    this.defineUser(this.inputValue);
-		    this.$emit(EVENTS.loadAppData);
-	    },
+      logIn() {
+	this.defineUser(this.inputValue);
+	this.$emit(EVENTS.loadAppData);
+      },
       makeRoom() {
-	    	this.createRoom(this.inputValue);
-	    	this.$root.$emit(EVENTS.roomCreated);
-	    	this.closeModal();
+   	this.createRoom(this.inputValue);
+    	this.$root.$emit(EVENTS.roomCreated);
+    	this.closeModal();
       },
       closeModal() {
-	    	this.setModal(null);
+    	this.setModal(null);
       }
     },
     computed: {
-			...mapState({
+      ...mapState({
         modal: state => state[GENERAL_MODULE].modal,
-				maxUserNameLength: state => state[GENERAL_MODULE].serverSettings.maxUserNameLength,
-				maxRoomNameLength: state => state[GENERAL_MODULE].serverSettings.maxRoomNameLength,
+	maxUserNameLength: state => state[GENERAL_MODULE].serverSettings.maxUserNameLength,
+	maxRoomNameLength: state => state[GENERAL_MODULE].serverSettings.maxRoomNameLength,
         isLoading: state => state[GENERAL_MODULE].isLoading,
         userName: state => state[USER_MODULE].userName
-			}),
+      }),
       maxInputLength() {
-				return this[this.content?.maxInputLength] ?? 0;
+        return this[this.content?.maxInputLength] ?? 0;
       },
     },
     watch: {
-			modal(newVal) {
-				this.content = MODAL_CONTENT[newVal];
-				if (!newVal) {
-					this.inputValue = '';
-					this.lengthWarn = false;
+      modal(newVal) {
+	this.content = MODAL_CONTENT[newVal];
+	if (!newVal) {
+	  this.inputValue = '';
+	  this.lengthWarn = false;
         } else if (newVal === MODAL_TYPES.login && this.userName) {
-					this.inputValue = this.userName;
+	  this.inputValue = this.userName;
         }
       },
-	    inputValue(newVal) {
-		    this.lengthWarn = this.maxInputLength ? newVal.length === this.maxInputLength : false;
-	    }
+      inputValue(newVal) {
+	this.lengthWarn = this.maxInputLength ? newVal.length === this.maxInputLength : false;
+      }
     }
-	}
+  }
 </script>
 
 <style lang="scss">

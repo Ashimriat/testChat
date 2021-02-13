@@ -10,10 +10,10 @@ import { GENERAL_MODULE, ROOMS_MODULE, SOCKET_MODULE, USER_MODULE } from "./modu
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-	modules: {
-		[GENERAL_MODULE]: generalModule,
-		[ROOMS_MODULE]: roomsModule,
-		[SOCKET_MODULE]: socketModule,
-		[USER_MODULE]: userModule
-	}
+  modules: {
+    [GENERAL_MODULE]: generalModule,
+    [ROOMS_MODULE]: roomsModule,
+    [SOCKET_MODULE]: socketModule,
+    [USER_MODULE]: userModule
+  }
 });

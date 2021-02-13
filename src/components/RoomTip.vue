@@ -25,39 +25,39 @@
 </template>
 
 <script>
-	import { EVENTS } from "../constants";
+  import { EVENTS } from "../constants";
 
 
-	export default {
-		name: "RoomTip",
-		data() {
-			return {
-				tipInfo: null
+  export default {
+    name: "RoomTip",
+    data() {
+      return {
+	tipInfo: null
       }
     },
     mounted() {
-			this.$root.$on(EVENTS.showTip, this.showTip);
-			this.$root.$on(EVENTS.hideTip, this.hideTip);
-    },
-    methods: {
-			showTip({ e: { offsetX, pageX, offsetY, pageY }, roomData: { name, lastMessage, isUnread } }) {
-				this.tipInfo = {
-					x: pageX - offsetX + 135,
-					y: pageY - offsetY + 15,
-					roomName: name,
-					lastMessage,
-          isUnread
-				};
-      },
-      hideTip() {
-				this.tipInfo = null;
-      }
+      this.$root.$on(EVENTS.showTip, this.showTip);
+      this.$root.$on(EVENTS.hideTip, this.hideTip);
     },
     beforeDestroy() {
-	    this.$root.$off(EVENTS.showTip, this.showTip);
-	    this.$root.$on(EVENTS.hideTip, this.hideTip);
+      this.$root.$off(EVENTS.showTip, this.showTip);
+      this.$root.$on(EVENTS.hideTip, this.hideTip);
+    },
+    methods: {
+      showTip({ e: { offsetX, pageX, offsetY, pageY }, roomData: { name, lastMessage, isUnread } }) {
+        this.tipInfo = {
+	  x: pageX - offsetX + 135,
+	  y: pageY - offsetY + 15,
+	  roomName: name,
+	  lastMessage,
+          isUnread
+        };
+      },
+      hideTip() {
+	this.tipInfo = null;
+      }
     }
-	}
+  }
 </script>
 
 <style lang="scss">

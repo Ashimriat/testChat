@@ -18,18 +18,18 @@
   const { USER: { LOGOUT_USER } } = actions;
 
   export default {
-		name: "TopPanel",
+    name: "TopPanel",
     methods: {
-			...mapActions({
+      ...mapActions({
         logOut: `${USER_MODULE}/${LOGOUT_USER}`
-			})
+      })
     },
     computed: {
-			...mapState({
+      ...mapState({
         userName: state => state[USER_MODULE].userName
-			})
+      })
     }
-	}
+  }
 </script>
 
 <style lang="scss">

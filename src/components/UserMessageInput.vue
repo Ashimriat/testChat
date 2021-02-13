@@ -26,10 +26,10 @@
   const { ROOMS: { ACTIVE_ROOM } } = getters;
 
   export default {
-	  name: "UserMessageInput",
-	  data() {
-  		return {
-  		  message: '',
+    name: "UserMessageInput",
+    data() {
+      return {
+  	message: '',
         isTransferOnEnter: false,
         isInputFocused: false,
         isSendAllowed: false
@@ -38,61 +38,61 @@
     mounted() {
       window.addEventListener('keydown', this.keyDownHandler);
       window.addEventListener('keyup', this.keyUpHandler);
-	    this.$root.$on(EVENTS.roomCreated, this.roomCreatedEventHandler);
+      this.$root.$on(EVENTS.roomCreated, this.roomCreatedEventHandler);
+    },
+    beforeDestroy() {
+      window.removeEventListener('keydown', this.keyDownHandler);
+      window.removeEventListener('keyup', this.keyUpHandler);
+      this.$root.$off(EVENTS.roomCreated, this.roomCreatedEventHandler);
     },
     methods: {
-			...mapActions({
+      ...mapActions({
         sendMessage: `${SOCKET_MODULE}/${SEND_MESSAGE}`
-			}),
+      }),
       ...mapMutations({
         setModal: `${GENERAL_MODULE}/${SET_MODAL}`
       }),
       keyDownHandler({ keyCode }) {
-				if (keyCode === KEYCODES.SHIFT) {
-					this.isTransferOnEnter = true;
-				} else if (keyCode === KEYCODES.ENTER) {
-					const canSendMessage = this.message && !this.isTransferOnEnter && this.isInputFocused;
-					if (canSendMessage) {
-						this.processMessage();
+	if (keyCode === KEYCODES.SHIFT) {
+	  this.isTransferOnEnter = true;
+	} else if (keyCode === KEYCODES.ENTER) {
+	  const canSendMessage = this.message && !this.isTransferOnEnter && this.isInputFocused;
+	  if (canSendMessage) {
+	    this.processMessage();
           }
-				}
+	}
       },
       keyUpHandler({ keyCode }) {
-	      if (keyCode === KEYCODES.SHIFT) {
-		      this.isTransferOnEnter = false;
-	      }
+	if (keyCode === KEYCODES.SHIFT) {
+	  this.isTransferOnEnter = false;
+	}
       },
       roomCreatedEventHandler() {
-	      if (this.message && this.isSendAllowed) {
-	      	this.sendMessage(this.message);
-	      	this.isSendAllowed = false;
-	      }
+	if (this.message && this.isSendAllowed) {
+	  this.sendMessage(this.message);
+	  this.isSendAllowed = false;
+	}
       },
       toggleFocus() {
-				this.isInputFocused = !this.isInputFocused;
+	this.isInputFocused = !this.isInputFocused;
       },
       processMessage() {
-				if (this.activeRoom) {
-				  this.sendMessage(this.message);
-				  this.$refs.messageInput.value = '';
-				  this.$refs.messageInput.blur();
+	if (this.activeRoom) {
+	  this.sendMessage(this.message);
+	  this.$refs.messageInput.value = '';
+	  this.$refs.messageInput.blur();
         } else {
-					this.isSendAllowed = true;
-					this.setModal(MODAL_TYPES.createRoom);
+	  this.isSendAllowed = true;
+	  this.setModal(MODAL_TYPES.createRoom);
         }
       }
     },
     computed: {
-			...mapGetters([`${ROOMS_MODULE}/${ACTIVE_ROOM}`]),
+      ...mapGetters([`${ROOMS_MODULE}/${ACTIVE_ROOM}`]),
       ...mapState({
-	      maxMessageLength: state => state[GENERAL_MODULE].serverSettings.maxMessageLength
+	maxMessageLength: state => state[GENERAL_MODULE].serverSettings.maxMessageLength
       })
     },
-    beforeDestroy() {
-	  	window.removeEventListener('keydown', this.keyDownHandler);
-	    window.removeEventListener('keyup', this.keyUpHandler);
-	    this.$root.$off(EVENTS.roomCreated, this.roomCreatedEventHandler);
-    }
   }
 </script>
 

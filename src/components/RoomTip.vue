@@ -41,7 +41,7 @@
     },
     beforeDestroy() {
       this.$root.$off(EVENTS.showTip, this.showTip);
-      this.$root.$on(EVENTS.hideTip, this.hideTip);
+      this.$root.$off(EVENTS.hideTip, this.hideTip);
     },
     methods: {
       showTip({ e: { offsetX, pageX, offsetY, pageY }, roomData: { name, lastMessage, isUnread } }) {

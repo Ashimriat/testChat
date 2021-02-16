@@ -124,36 +124,41 @@ export default {
       const requestUrl = API.ROOM_MESSAGES.replace(/%ROOM%/, roomName);
       commit(`${GENERAL_MODULE}/${TOGGLE_LOADER}`, null, { root: true });
       try {
-	const data = await fetch(requestUrl);
-	const { result } = await data.json();
-	if (result) {
-	  const messages = result.map(formMessage);
-	  commit(SET_ROOM_MESSAGES, { messages, roomIndex });
-	} else {
-	  commit(`${GENERAL_MODULE}/${SET_ERROR}`, ERRORS_TYPES.noMessagesHistory, { root: true });
-	}
+				const data = await fetch(requestUrl);
+				const { result } = await data.json();
+				if (result) {
+				  const messages = result.map(formMessage);
+				  commit(SET_ROOM_MESSAGES, { messages, roomIndex });
+				} else {
+				  commit(`${GENERAL_MODULE}/${SET_ERROR}`, ERRORS_TYPES.noMessagesHistory, { root: true });
+				}
       } catch (e) {
-	commit(`${GENERAL_MODULE}/${SET_ERROR}`, ERRORS_TYPES.noMessagesHistory, { root: true });
+				commit(`${GENERAL_MODULE}/${SET_ERROR}`, ERRORS_TYPES.noMessagesHistory, { root: true });
       }
       // откладываю прогрузку, чтобы не было дерганий интерфейса
       timerId = setTimeout(() => {
-	commit(`${GENERAL_MODULE}/${TOGGLE_LOADER}`, null, { root: true });
-	commit(MARK_ROOM_CHECKED, roomIndex);
-	clearTimeout(timerId);
+				commit(`${GENERAL_MODULE}/${TOGGLE_LOADER}`, null, { root: true });
+				commit(MARK_ROOM_CHECKED, roomIndex);
+				clearTimeout(timerId);
       }, 2000);
     },
     [SELECT_ROOM]({ state, commit, dispatch, getters }, { id, name }) {
       const editedRoomIndex = getters[GET_ROOM_INDEX_BY_ID](id);
       commit(SET_ACTIVE_ROOM, id);
       if (state.rooms[editedRoomIndex].isUnread) {
-	commit(TOGGLE_ROOM_UNREAD, editedRoomIndex);
+				commit(TOGGLE_ROOM_UNREAD, editedRoomIndex);
       }
       if (!state.rooms[editedRoomIndex].messages.length) {
-	dispatch(LOAD_ROOM_MESSAGES, { roomName: name, roomIndex: editedRoomIndex });
+				dispatch(LOAD_ROOM_MESSAGES, { roomName: name, roomIndex: editedRoomIndex });
       }
     },
-    [USER_CREATE_ROOM]({ commit, dispatch }, name) {
-      const room = formRoom({ name });
+    [USER_CREATE_ROOM]({ commit, dispatch, state }, roomName) {
+    	const roomWithSameName = state.rooms.find(({ name }) => name === roomName);
+    	if (roomWithSameName) {
+    		commit(`${GENERAL_MODULE}/${SET_ERROR}`, ERRORS_TYPES.roomExists, { root: true });
+    		return;
+	    }
+      const room = formRoom({ name: roomName });
       dispatch(UPDATE_ROOMS_ORDER_INFO, room);
       commit(CREATE_ROOM, { room });
       commit(SET_ACTIVE_ROOM, room.id);

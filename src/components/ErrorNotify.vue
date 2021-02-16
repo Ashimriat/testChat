@@ -23,24 +23,26 @@
     },
     computed: {
       ...mapState({
-	error: state => state[GENERAL_MODULE].error
+        error: state => state[GENERAL_MODULE].error
       }),
       errorMessage() {
-	if (!this.error) return '';
-	switch (this.error) {
-	  case ERRORS_TYPES.noMessagesHistory:
-	    return 'Не удалось загрузить историю сообщений.';
-	  case ERRORS_TYPES.noRoomsList:
-	    return 'Не удалось загрузить список комнат.';
-	  case ERRORS_TYPES.messageNotSent:
-	    return 'Не удалось отправить сообщение.';
+        if (!this.error) return '';
+        switch (this.error) {
+          case ERRORS_TYPES.noMessagesHistory:
+            return 'Не удалось загрузить историю сообщений.';
+          case ERRORS_TYPES.noRoomsList:
+            return 'Не удалось загрузить список комнат.';
+          case ERRORS_TYPES.messageNotSent:
+            return 'Не удалось отправить сообщение.';
           case ERRORS_TYPES.settingsLoadFailed:
             return 'Не удалось загрузить настройки, будут использованы значения по умолчанию.';
           case ERRORS_TYPES.noSocketConnect:
             return 'Не удалось соединиться с сокетом сервера, попробуйте позднее.';
           case ERRORS_TYPES.noSocketPong:
-            return 'Сервер не пингуется, попробуйте позднее.'
-	}
+            return 'Сервер не пингуется, попробуйте позднее.';
+          case ERRORS_TYPES.roomExists:
+          	return 'Комната с таким именем уже существует.';
+        }
       }
     },
     watch: {

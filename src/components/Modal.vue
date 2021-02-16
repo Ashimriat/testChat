@@ -32,7 +32,7 @@
   import Loader from "./Loader";
 
 
-  const { USER: { USER_CREATE_ROOM, DEFINE_USER } } = actions;
+  const { USER: { DEFINE_USER }, ROOMS: { USER_CREATE_ROOM } } = actions;
   const { GENERAL: { SET_MODAL } } = mutations;
 
   export default {
@@ -47,7 +47,7 @@
     },
     methods: {
       ...mapActions({
-	defineUser: `${USER_MODULE}/${DEFINE_USER}`,
+	      defineUser: `${USER_MODULE}/${DEFINE_USER}`,
         createRoom: `${ROOMS_MODULE}/${USER_CREATE_ROOM}`,
       }),
       ...mapMutations({
@@ -61,9 +61,11 @@
 	this.$emit(EVENTS.loadAppData);
       },
       makeRoom() {
-   	this.createRoom(this.inputValue);
-    	this.$root.$emit(EVENTS.roomCreated);
-    	this.closeModal();
+        this.createRoom(this.inputValue);
+        if (!this.error) {
+	        this.$root.$emit(EVENTS.roomCreated);
+	        this.closeModal();
+        }
       },
       closeModal() {
     	this.setModal(null);
@@ -75,7 +77,8 @@
 	maxUserNameLength: state => state[GENERAL_MODULE].serverSettings.maxUserNameLength,
 	maxRoomNameLength: state => state[GENERAL_MODULE].serverSettings.maxRoomNameLength,
         isLoading: state => state[GENERAL_MODULE].isLoading,
-        userName: state => state[USER_MODULE].userName
+        userName: state => state[USER_MODULE].userName,
+        error: state => state[GENERAL_MODULE].error
       }),
       maxInputLength() {
         return this[this.content?.maxInputLength] ?? 0;

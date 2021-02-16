@@ -52,7 +52,8 @@ export const ERRORS_TYPES = {
   messageNotSent: 'messageNotSent',
   settingsLoadFailed: 'settingsLoadFailed',
   noSocketConnect: 'noSocketConnect',
-  noSocketPong: 'noSocketPong'
+  noSocketPong: 'noSocketPong',
+  roomExists: 'roomExists'
 };
 
 export const KEYCODES = {

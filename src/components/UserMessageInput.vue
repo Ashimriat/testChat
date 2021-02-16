@@ -53,28 +53,28 @@
         setModal: `${GENERAL_MODULE}/${SET_MODAL}`
       }),
       keyDownHandler({ keyCode }) {
-	if (keyCode === KEYCODES.SHIFT) {
-	  this.isTransferOnEnter = true;
-	} else if (keyCode === KEYCODES.ENTER) {
-	  const canSendMessage = this.message && !this.isTransferOnEnter && this.isInputFocused;
-	  if (canSendMessage) {
-	    this.processMessage();
+        if (keyCode === KEYCODES.SHIFT) {
+          this.isTransferOnEnter = true;
+        } else if (keyCode === KEYCODES.ENTER) {
+          const canSendMessage = this.message && !this.isTransferOnEnter && this.isInputFocused;
+          if (canSendMessage) {
+            this.processMessage();
           }
-	}
+        }
       },
       keyUpHandler({ keyCode }) {
-	if (keyCode === KEYCODES.SHIFT) {
-	  this.isTransferOnEnter = false;
-	}
+        if (keyCode === KEYCODES.SHIFT) {
+          this.isTransferOnEnter = false;
+        }
       },
       roomCreatedEventHandler() {
-	if (this.message && this.isSendAllowed) {
-	  this.sendMessage(this.message);
-	  this.isSendAllowed = false;
-	}
+        if (this.message && this.isSendAllowed) {
+          this.sendMessage(this.message);
+          this.isSendAllowed = false;
+        }
       },
       toggleFocus() {
-	this.isInputFocused = !this.isInputFocused;
+	      this.isInputFocused = !this.isInputFocused;
       },
       processMessage() {
 	if (this.activeRoom) {
@@ -88,7 +88,7 @@
       }
     },
     computed: {
-      ...mapGetters([`${ROOMS_MODULE}/${ACTIVE_ROOM}`]),
+      ...mapGetters({ activeRoom: `${ROOMS_MODULE}/${ACTIVE_ROOM}` }),
       ...mapState({
 	maxMessageLength: state => state[GENERAL_MODULE].serverSettings.maxMessageLength
       })

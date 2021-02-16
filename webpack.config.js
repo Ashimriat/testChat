@@ -13,10 +13,7 @@ module.exports = (env, args) => {
 		'store/actions',
 		'store/mutations',
 		'store/modulesNames'
-	].map(modulePath => {
-		console.log(path.resolve(__dirname, `src/${modulePath}`));
-		return path.resolve(__dirname, `src/${modulePath}`);
-	});
+	].map(modulePath => path.resolve(__dirname, `src/${modulePath}`));
 
 	const config = {
 		mode: args.mode,

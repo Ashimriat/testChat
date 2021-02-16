@@ -51,7 +51,7 @@
       await this.loadSettings();
       this.loadUser();
       if (this.userName) {
-	this.loadAppData();
+	      this.loadAppData();
       }
     },
     methods: {

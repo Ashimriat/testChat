@@ -5,5 +5,5 @@ import App from "./App";
 
 new Vue({
   store,
-  ender: h => h(App)
+  render: h => h(App)
 }).$mount('#app');

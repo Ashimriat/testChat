@@ -6,7 +6,7 @@ import {
   APP_SETTINGS, PING_MESSAGE_OBJ
 } from "../../constants";
 import { formMessage, formRoom } from "../../utils";
-import { GENERAL_MODULE, ROOMS_MODULE } from "../modulesNames";
+import { GENERAL_MODULE, ROOMS_MODULE, USER_MODULE } from "../modulesNames";
 
 
 const {
@@ -49,8 +49,8 @@ export default {
     isConnected: false
   }),
   mutations: {
-    [CREATE_SOCKET](state) {
-      state.socket = new WebSocket(API.SOCKET + state.userName);
+    [CREATE_SOCKET](state, userName) {
+      state.socket = new WebSocket(API.SOCKET + userName);
     },
     [DISCONNECT_SOCKET](state) {
       state.socket.removeEventListener('message', socketMessageHandler);
@@ -62,11 +62,11 @@ export default {
     },
   },
   actions: {
-    async [CONNECT_SOCKET]({ state, dispatch, commit }) {
+    async [CONNECT_SOCKET]({ state, dispatch, rootState, commit }) {
       // поднимаем лоадер
       commit(`${GENERAL_MODULE}/${TOGGLE_LOADER}`, null, { root: true });
       // создаем сокет
-      commit(CREATE_SOCKET);
+      commit(CREATE_SOCKET, rootState[USER_MODULE].userName);
       // коннектим его
       try {
 	await new Promise((res, rej) => {
